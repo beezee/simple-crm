@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "express": "*",
+    "fp-ts": "^2.16.9",
+    "io-ts": "^2.2.22",
     "prettier": "*",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",

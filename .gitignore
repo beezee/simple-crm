@@ -21,3 +21,4 @@ spec/**/*.js
 dist/*
 integration_dist
 sp*.tgz
+code/server/database.sqlite
