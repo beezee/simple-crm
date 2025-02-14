@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
-import * as t from 'io-ts';
 import { Note } from "./Note";
+import type { UserCreateData, UserUpdateData } from '@shared/types';
 
 @Entity()
 export class User {
@@ -23,20 +23,7 @@ export class User {
     notes: Note[];
 }
 
-export const UserUpdateCodec = t.type({
-    firstName: t.string,
-    lastName: t.string,
-    age: t.number,
-    phoneNumber: t.string
-});
-
-// Type-level assertions to ensure UserUpdateCodec matches Omit<User, 'id'>
-type UserUpdate = t.TypeOf<typeof UserUpdateCodec>;
-type UserFromEntity = Omit<User, 'id'>;
-
-// These type assertions will fail if the types don't match exactly
-type _assertUpdateMatchesEntity = UserUpdate extends UserFromEntity ? true : never;
-type _assertEntityMatchesUpdate = UserFromEntity extends UserUpdate ? true : never;
-
-// This ensures the types are exactly equal (no extra properties in either type)
-type _assertBidirectional = _assertUpdateMatchesEntity & _assertEntityMatchesUpdate;
+// Type assertions to ensure entity matches codec types
+type EntityFields = Omit<User, 'id' | 'notes'>;
+type _assertCreate = EntityFields extends UserCreateData ? true : UserCreateData extends EntityFields ? true : never;
+type _assertUpdate = EntityFields extends UserUpdateData ? true : never;

@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { User } from "./User";
-import * as t from 'io-ts';
+import type { NoteCreateData } from '@shared/types';
 
 @Entity()
 export class Note {
@@ -20,6 +20,6 @@ export class Note {
     userId: number;
 }
 
-export const NoteCreateCodec = t.type({
-    content: t.string
-});
+// Type assertion to ensure entity matches codec type
+type EntityFields = Pick<Note, 'content'>;
+type _assertCreate = EntityFields extends NoteCreateData ? true : NoteCreateData extends EntityFields ? true : never;

@@ -16,7 +16,7 @@ export const validateForm = <A, O>(
         error: 'Invalid form data',
         details: errors.map(e => ({
           path: e.context.map(c => c.key).join('.'),
-          message: e.message
+          message: `${e.message}`
         }))
       }),
       onSuccess
