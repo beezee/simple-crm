@@ -2,6 +2,7 @@
   "dependencies": {
     "autoprefixer": "*",
     "axios": "*",
+    "io-ts-types": "^0.5.19",
     "postcss": "*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
