@@ -36,6 +36,7 @@ export const Users: React.FC = () => {
                                 user={user} 
                                 key={user.id} 
                                 onNoteAdded={fetchUsers}
+                                onUserEdited={fetchUsers}
                             />
                         ))}
                     </tbody>

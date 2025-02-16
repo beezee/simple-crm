@@ -1,8 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { User } from "./types";
-import { ValidationError, handleApiError } from "./utils/error";
 import { ValidationErrors } from "./components/validation-errors";
+import { handleServerError } from './utils/errors';
 
 interface AddNoteProps {
     user: User;
@@ -12,7 +12,7 @@ interface AddNoteProps {
 
 export const AddNote: React.FC<AddNoteProps> = ({ user, onSuccess, onCancel }) => {
     const [content, setContent] = useState("");
-    const [errors, setErrors] = useState<ValidationError | null>(null);
+    const [errors, setErrors] = useState<string[] | null>(null);
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -24,7 +24,7 @@ export const AddNote: React.FC<AddNoteProps> = ({ user, onSuccess, onCancel }) =
             setContent("");
             onSuccess();
         } catch (error) {
-            setErrors(handleApiError(error));
+            setErrors(handleServerError(error));
         }
         setLoading(false);
     };

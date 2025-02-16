@@ -4,14 +4,14 @@ import { NumberFromString } from 'io-ts-types';
 export const UserCreateCodec = t.type({
     firstName: t.string,
     lastName: t.string,
-    age: NumberFromString,
+    age: t.union([NumberFromString, t.number]),
     phoneNumber: t.string
 });
 
 export const UserUpdateCodec = t.partial({
     firstName: t.string,
     lastName: t.string,
-    age: NumberFromString,
+    age: t.union([NumberFromString, t.number]),
     phoneNumber: t.string
 });
 

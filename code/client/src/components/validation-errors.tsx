@@ -1,19 +1,14 @@
-import { ValidationError } from "../utils/error";
-
 interface ValidationErrorsProps {
-    errors: ValidationError | null;
+    errors: string[] | null;
 }
 
-export const ValidationErrors: React.FC<ValidationErrorsProps> = ({ errors }) => {
+export const ValidationErrors = ({ errors }: ValidationErrorsProps) => {
     if (!errors) return null;
     
     return (
         <div className="text-red-500">
-            <p>{errors.error}</p>
-            {errors.details.map((detail, index) => (
-                <p key={index} className="text-sm">
-                    {detail.path}: {detail.message}
-                </p>
+            {errors.map((error, index) => (
+                <pre key={index} className="text-sm font-sans whitespace-pre-line">{error}</pre>
             ))}
         </div>
     );

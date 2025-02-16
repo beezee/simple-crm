@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import { Request, Response, RequestHandler } from 'express';
 import { pipe } from 'fp-ts/function';
 import { fold } from 'fp-ts/Either';
+import reporter from 'io-ts-reporters';
 
 // Enhanced request with typed body
 export type TypedRequest<T> = Omit<Request, 'body'> & { body: T };
@@ -16,12 +17,9 @@ export const withBody = <C extends t.Mixed>(codec: C) => (
     return pipe(
         codec.decode(req.body),
         fold(
-            (errors) => res.status(400).json({ 
-                error: 'Invalid request body',
-                details: errors.map(e => ({
-                    path: e.context.map(c => c.key).join('.'),
-                    message: e.message
-                }))
+            (errors) => res.status(400).json({
+                error: "Invalid request body",
+                details: reporter.report(t.failures(errors))
             }),
             (validBody) => handler({ ...req, body: validBody }, res)
         )

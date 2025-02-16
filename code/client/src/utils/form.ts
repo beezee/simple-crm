@@ -1,24 +1,18 @@
 import * as t from 'io-ts';
 import { pipe } from 'fp-ts/function';
 import { fold } from 'fp-ts/Either';
-import { ValidationError } from './error';
+import reporter from 'io-ts-reporters';
 
 export const validateForm = <A, O>(
   codec: t.Type<A, O>,
   data: unknown,
   onSuccess: (validData: A) => void,
-  onError: (error: ValidationError) => void
+  onError: (errors: string[]) => void
 ) => {
   pipe(
     codec.decode(data),
     fold(
-      (errors) => onError({
-        error: 'Invalid form data',
-        details: errors.map(e => ({
-          path: e.context.map(c => c.key).join('.'),
-          message: `${e.message}`
-        }))
-      }),
+      (errors) => onError(reporter.report(t.failures(errors))),
       onSuccess
     )
   );

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import { ValidationError, handleApiError } from "./utils/error";
 import { ValidationErrors } from "./components/validation-errors";
 import { UserCreateCodec } from '@shared/codecs';
 import { validateForm } from './utils/form';
+import { handleServerError } from './utils/errors';
 
 interface AddUserProps {
     onSuccess: () => void;
@@ -14,7 +14,7 @@ export const AddUser: React.FC<AddUserProps> = ({ onSuccess }) => {
     const [lastName, setLastName] = useState("");
     const [age, setAge] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [errors, setErrors] = useState<ValidationError | null>(null);
+    const [errors, setErrors] = useState<string[] | null>(null);
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -42,7 +42,7 @@ export const AddUser: React.FC<AddUserProps> = ({ onSuccess }) => {
                     setPhoneNumber("");
                     onSuccess();
                 } catch (error) {
-                    setErrors(handleApiError(error));
+                    setErrors(handleServerError(error));
                 }
             },
             setErrors

@@ -1,19 +1,20 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { User } from "./types";
 import axios from "axios";
 import { AddNote } from "./add-note";
-import { ValidationError, handleApiError } from "./utils/error";
 import { ValidationErrors } from "./components/validation-errors";
 import { UserUpdateCodec } from '@shared/codecs';
 import { validateForm } from './utils/form';
+import { handleServerError } from './utils/errors';
 
 interface UserRowProps {
     user: User;
     onNoteAdded: () => void;
-    onSuccess: () => void;
+    onUserEdited: () => void;
 }
 
-export const UserRow: React.FC<UserRowProps> = ({ user, onNoteAdded, onSuccess }) => {
+export const UserRow: React.FC<UserRowProps> = ({ user, onNoteAdded, onUserEdited: onSuccess }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [isAddingNote, setIsAddingNote] = useState(false);
     const [showNotes, setShowNotes] = useState(false);
@@ -21,7 +22,7 @@ export const UserRow: React.FC<UserRowProps> = ({ user, onNoteAdded, onSuccess }
     const [lastName, setLastName] = useState(user.lastName);
     const [age, setAge] = useState(`${user.age}`);
     const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
-    const [errors, setErrors] = useState<ValidationError | null>(null);
+    const [errors, setErrors] = useState<string[] | null>(null);
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -46,7 +47,7 @@ export const UserRow: React.FC<UserRowProps> = ({ user, onNoteAdded, onSuccess }
                     setIsEditing(false);
                     onSuccess();
                 } catch (error) {
-                    setErrors(handleApiError(error));
+                    setErrors(handleServerError(error));
                 }
             },
             setErrors
@@ -173,7 +174,7 @@ export const UserRow: React.FC<UserRowProps> = ({ user, onNoteAdded, onSuccess }
                         <button onClick={() => setIsAddingNote(true)}>Add Note</button>
                     </div>
                 </td>
-                <td>{firstName}</td>
+                <td><Link to={`/user/${user.id}`} className="text-blue-600 hover:text-blue-800">{firstName}</Link></td>
                 <td>{lastName}</td>
                 <td>{age}</td>
                 <td>{phoneNumber}</td>

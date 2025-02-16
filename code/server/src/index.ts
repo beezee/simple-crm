@@ -3,7 +3,7 @@ import { User } from "./entity/User"
 import { Note } from "./entity/Note"
 import * as express from "express"
 import { withBody } from "./middleware/with-body"
-import { UserUpdateCodec, NoteCreateCodec } from '@shared/codecs'
+import { UserUpdateCodec, NoteCreateCodec } from '../../shared/codecs'
 
 const run = async () => {
     await AppDataSource.initialize();

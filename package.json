@@ -6,12 +6,16 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "test": "npm run test --workspaces --if-present",
-    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "cd code/shared && npx jest && npm run test --workspaces --if-present",
+    "typecheck": "cd code/shared && npx tsc --noEmit && npm run typecheck --workspaces --if-present",
     "update-graphql": "npm run update-graphql --workspaces --if-present"
   },
   "workspaces": [
     "code/client",
     "code/server"
-  ]
+  ],
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "ts-jest": "^29.2.5"
+  }
 }
