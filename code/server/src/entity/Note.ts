@@ -23,3 +23,6 @@ export class Note {
 // Type assertion to ensure entity matches codec type
 type EntityFields = Pick<Note, 'content'>;
 type _assertCreate = EntityFields extends NoteCreateData ? true : NoteCreateData extends EntityFields ? true : never;
+
+// Value declaration to make TypeScript evaluate the type assertion
+const assertCreate: _assertCreate = true;

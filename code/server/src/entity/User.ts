@@ -27,3 +27,7 @@ export class User {
 type EntityFields = Omit<User, 'id' | 'notes'>;
 type _assertCreate = EntityFields extends UserCreateData ? true : UserCreateData extends EntityFields ? true : never;
 type _assertUpdate = EntityFields extends UserUpdateData ? true : never;
+
+// Value declarations to make TypeScript evaluate the type assertions
+const assertCreate: _assertCreate = true;
+const assertUpdate: _assertUpdate = true;
